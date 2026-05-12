@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.Util;
 import org.eclipse.ui.internal.ide.IDEInternalPreferences;
@@ -76,16 +77,11 @@ public class ServerUIUtil {
 	}
 
 	public static void openInSystemExplorer(String systemCommand, File file) throws IOException {
-		if (Util.isLinux() || Util.isMac()) {
-			Runtime runtime = Runtime.getRuntime();
+		ProcessBuilder processBuilder = new ProcessBuilder(DebugPlugin.parseArguments(systemCommand));
 
-			runtime.exec(new String[] {"/bin/sh", "-c", systemCommand}, null, file);
-		}
-		else {
-			Runtime runtime = Runtime.getRuntime();
+		processBuilder.directory(file);
 
-			runtime.exec(systemCommand, null, file);
-		}
+		processBuilder.start();
 	}
 
 	public static String quotePath(String path) {

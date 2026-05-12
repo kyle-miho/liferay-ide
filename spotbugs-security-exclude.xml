@@ -1,5 +1,21 @@
 <FindBugsFilter>
 
+	<!-- False positive: executed without a shell, so command arguments containing metacharacters cannot inject or chain additional commands -->
+
+	<Match>
+		<Bug pattern="COMMAND_INJECTION" />
+		<Class name="com.liferay.ide.server.ui.util.ServerUIUtil" />
+		<Method name="openInSystemExplorer" />
+	</Match>
+
+	<!-- False positive: executed without a shell, so the workspace path cannot be exploited to inject or chain additional commands -->
+
+	<Match>
+		<Bug pattern="COMMAND_INJECTION" />
+		<Class name="com.liferay.ide.ui.workspace.LaunchWorkspaceHandler" />
+		<Method name="execute" />
+	</Match>
+
 	<!-- Only loads .groovy scripts bundled in the plugin, not user input -->
 
 	<Match>
